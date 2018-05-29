@@ -1,0 +1,29 @@
+sudo: required
+language: generic
+os: linux
+
+before_install:
+  - sudo apt update
+  - sudo apt install realpath p7zip-full qemu-user-static
+
+script:
+  - pushd ../
+  - git clone https://github.com/guysoft/CustomPiOS.git
+  - popd
+  - cd src/image
+  - wget -c 'https://downloads.raspberrypi.org/raspbian_lite_latest' -O 'latest-raspbian.zip'
+  - cd ../
+  - ../../CustomPiOS/src/update-custompios-paths
+  - sudo modprobe loop
+  - sudo bash ./build_dist
+  - wget https://github.com/probonopd/uploadtool/raw/master/upload.sh
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then export TRAVIS_EVENT_TYPE=pull_request; fi
+  - zip -j minimal-kiosk-os-$(date +"%Y-%m-%d").zip workspace/*.img
+  - bash upload.sh *.zip
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)$/

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Setup minimalKioskOS
+# Install Chromium and disable SSH
+# Written by Sylvia van Os
+# GPL V3
+########
+
+
+# Source error handling, leave this in place
+set -x
+set -e
+
+source /common.sh
+
+unpack /filesystem/home/pi /home/pi pi
+unpack /filesystem/home/root /root root
+unpack /filesystem/boot /boot
+
+set +x
+
+# Install Chromium
+apt-get update
+apt-get install -y chromium-browser
+
+# Diable SSH
+rm /boot/ssh
+
+set -x
+
+# Unpack root at the end, so files are modified before
+unpack /filesystem/root /
