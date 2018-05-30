@@ -2,6 +2,9 @@
 # Get our location
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Autohide mouse when inactive
+unclutter &
+
 # Give pi account a complex random password
 NEWPW='$(openssl rand -base64 32 | tr -d 'EOF')'
 passwd <<EOF

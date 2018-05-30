@@ -26,8 +26,11 @@ apt-get install -y chromium-browser
 apt-get install -y python3-pip
 pip3 install pychrome
 
-# Diable SSH
+# Disable SSH
 rm /boot/ssh
+
+# Auto-hide mouse support
+apt-get install -y unclutter
 
 set -x
 
