@@ -1,1 +1,3 @@
-https://example.com/
+file:///boot/placeholder.html
+
+# Replace the first line of this file with your URL (something like https://www.example.com/). All other lines are ignored.

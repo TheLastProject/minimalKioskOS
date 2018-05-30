@@ -3,7 +3,7 @@
 
 minimalKioskOS is a small [CustomPiOS](https://github.com/guysoft/CustomPiOS) system modelled after [FullPageOS](https://github.com/guysoft/FullPageOS).
 
-minimalKioskOS starts Chromium with the URL defined in /boot/url.txt.
+minimalKioskOS starts Chromium with the URL defined in /boot/url.txt and watches the process, ensuring connection retries when network connection issues occur.
 
 ## Why not use FullPageOS?
 
@@ -14,6 +14,8 @@ In comparison, FullPageOS runs Lighttpd, keeps the default pi:raspberry username
 ## How to use it?
 
 *In most cases, you will probably want the continuous build, as this is rebuild once a month using a Travis cron and will contain the latest security patches released for Raspbian. However, it has not been tested. If you are more concerned with proper testing than security patches, use a stable release.*
+
+**Make sure to edit /boot/url.txt to the desired URL in your image**
 
 1. Download a build from the releases tab on GitHub
 2. Unzip
