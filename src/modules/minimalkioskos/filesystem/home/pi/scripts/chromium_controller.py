@@ -13,13 +13,13 @@ while True:
         def loading_failed(**kwargs):
             time.sleep(5)
             global tab
-            tab.Page.navigate(url=sys.argv[-1], _timeout=5)
+            tab.Page.navigate(url=sys.argv[-1])
 
         tab.Network.loadingFailed = loading_failed
 
         tab.start()
         tab.Network.enable()
-        tab.Page.navigate(url=sys.argv[-1], _timeout=5)
+        tab.Page.navigate(url=sys.argv[-1])
 
         while True:
             time.sleep(1)
