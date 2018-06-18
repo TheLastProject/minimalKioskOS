@@ -8,7 +8,7 @@ before_install:
 
 script:
   - pushd ../
-  - git clone https://github.com/guysoft/CustomPiOS.git
+  - git clone -b patch-1 https://github.com/TheLastProject/CustomPiOS.git
   - popd
   - cd src/image
   - wget -c 'https://downloads.raspberrypi.org/raspbian_lite_latest' -O 'latest-raspbian.zip'

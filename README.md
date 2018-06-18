@@ -26,7 +26,7 @@ In comparison, FullPageOS runs Lighttpd, keeps the default pi:raspberry username
 ```
 sudo apt-get install realpath p7zip-full qemu-user-static
 
-git clone https://github.com/guysoft/CustomPiOS.git
+git clone -b patch-1 https://github.com/TheLastProject/CustomPiOS.git
 git clone https://github.com/TheLastProject/minimalKioskOS.git
 cd minimalKioskOS/src/image
 wget -c 'https://downloads.raspberrypi.org/raspbian_lite_latest' -O 'latest-raspbian.zip'
