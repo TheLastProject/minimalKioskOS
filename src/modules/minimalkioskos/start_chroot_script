@@ -20,7 +20,7 @@ set +x
 
 # Install Chromium
 apt-get update
-apt-get install -y chromium-browser
+apt-get install -y rpi-chromium-mods
 
 # Install Python dep
 apt-get install -y python3-pip
