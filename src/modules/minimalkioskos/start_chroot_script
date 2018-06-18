@@ -18,8 +18,11 @@ unpack /filesystem/boot /boot
 
 set +x
 
-# Install Chromium
 apt-get update
+# Install graphic libraries
+apt-get install -y libgl1-mesa-dri mesa-utils
+
+# Install Chromium
 apt-get install -y rpi-chromium-mods
 
 # Install Python dep
