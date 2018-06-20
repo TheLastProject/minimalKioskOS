@@ -32,6 +32,9 @@ rm /boot/ssh
 # Auto-hide mouse support
 apt-get install -y unclutter
 
+# Install xdotool
+apt-get install -y xdotool
+
 set -x
 
 # Unpack root at the end, so files are modified before

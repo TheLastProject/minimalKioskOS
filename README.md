@@ -21,6 +21,8 @@ In comparison, FullPageOS runs Lighttpd, keeps the default pi:raspberry username
 2. Unzip
 3. Install it [like any other Raspberry Pi image](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
+If you're using SimplePresenter, you will want to put the letter `f` in a newly created file called `/boot/spamkey.txt`. This will ensure that the f key (for fullscreen) gets sent to SimplePresenter constantly, so that it can catch it and call the requestFullScreen() JavaScript function to improve video playback performance.
+
 ## Building minimalKioskOS
 
 ```
