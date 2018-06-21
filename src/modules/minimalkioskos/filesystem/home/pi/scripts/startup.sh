@@ -6,12 +6,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 unclutter &
 
 # Give pi account a complex random password
-NEWPW="$(openssl rand -base64 32 | tr -d 'EOF')"
-passwd <<EOF
-raspberry
-$NEWPW
-$NEWPW
+if [ -e "/boot/autosecure" ]
+then
+    NEWPW="$(openssl rand -base64 32 | tr -d 'EOF')"
+    passwd <<EOF
+    raspberry
+    $NEWPW
+    $NEWPW
 EOF
+fi
 
 # Start Python-based controller to ensure reloads on load failures
 python3 "$DIR/chromium_controller.py" "$(head -n 1 /boot/url.txt)" &

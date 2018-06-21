@@ -15,13 +15,18 @@ In comparison, FullPageOS runs Lighttpd, keeps the default pi:raspberry username
 
 *In most cases, you will probably want the continuous build, as this is rebuild once a month using a Travis cron and will contain the latest security patches released for Raspbian. However, it has not been tested. If you are more concerned with proper testing than security patches, use a stable release.*
 
-**Make sure to edit /boot/url.txt to the desired URL in your image**
-
 1. Download a build from the releases tab on GitHub
 2. Unzip
 3. Install it [like any other Raspberry Pi image](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
+4. Configure it
 
-If you're using SimplePresenter, you will want to put the letter `f` in a newly created file called `/boot/spamkey.txt`. This will ensure that the f key (for fullscreen) gets sent to SimplePresenter constantly, so that it can catch it and call the requestFullScreen() JavaScript function to improve video playback performance.
+## Configuration settings
+minimalKioskPresenter uses files in /boot for basic configuration:
+
+- /boot/autosecure: If this file exists, automatically generate a random long password for the pi account to prevent access (default)
+- /boot/spamkey.txt: Constantly spam this key to Chromium (bind to this key in the JavaScript of your webpage to ensure things are correct, such as fullscreening a video
+- /boot/ssh: If this file exists, allow SSH access (make sure to remove autosecure and set a safe password yourself)
+- /boot/url.txt: Display the URL in this file when the OS boots
 
 ## Building minimalKioskOS
 
