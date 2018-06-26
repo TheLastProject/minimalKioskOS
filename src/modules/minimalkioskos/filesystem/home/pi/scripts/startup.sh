@@ -1,4 +1,6 @@
 #!/bin/bash
+export DISPLAY=:0
+
 # Get our location
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -25,13 +27,12 @@ chromium-browser --kiosk --touch-events=enabled --disable-pinch --noerrdialogs -
 # Keep sending an user-defined key to Chromium.
 # This defaults to f, for SimplePresenter to pick up and fullscreen videos for increased performance
 SPAMKEY="$(head -n 1 /boot/spamkey.txt)"
-if [ ! -z "$SPAMKEY" ]
-then
-    while true
-    do
-        export DISPLAY=:0
+while true
+do
+    if [ ! -z "$SPAMKEY" ]
+    then
         WID=$(xdotool search --onlyvisible --class chromium|head -1)
         xdotool windowactivate "${WID}"
         xdotool key "$SPAMKEY"
-    done
-fi
+    fi
+done
