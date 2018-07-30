@@ -40,6 +40,10 @@ class ChromiumController():
         if (kwargs['type'] != 'Document' or self.tab.DOM.getDocument()['root']['children'][-1]['frameId'] != kwargs['frameId']):
             return
 
+        if str(kwargs['response']['status']).startswith(('4', '5')):
+            self._loading_failed(**kwargs)
+            return
+
         if self.mutetime > 0:
             subprocess.run(['amixer', 'set', 'PCM', 'mute'], check=True)
 
