@@ -19,7 +19,7 @@ EOF
 fi
 
 # Start Python-based controller to ensure reloads on load failures
-python3 "$DIR/chromium_controller.py" "$(head -n 1 /boot/url.txt)" "$(head -n 1 /boot/mutesound.txt)" &
+python3 "$DIR/chromium_controller.py" "$(cat /boot/url.txt)" "$(head -n 1 /boot/nexturl)" "$(head -n 1 /boot/mutesound.txt)" &
 
 # Start Chromium
 chromium-browser --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --start-fullscreen --remote-debugging-port=9222 --app="file:///boot/placeholder.html" &

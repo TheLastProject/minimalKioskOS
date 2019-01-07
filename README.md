@@ -25,9 +25,10 @@ minimalKioskPresenter uses files in /boot for basic configuration:
 
 - /boot/autosecure: If this file exists, automatically generate a random long password for the pi account to prevent access (default)
 - /boot/mutesound.txt: Mute sound after page load for the given amount of seconds. 0 never mutes, -1 mutes forever (default: 0)
+- /boot/nexturl.txt: Switch to the next URL in /boot/url.txt every given amount of seconds (or refresh the page if there's only one URL). -1 never switches (default: -1)
 - /boot/spamkey.txt: Constantly spam this key to Chromium (bind to this key in the JavaScript of your webpage to ensure things are correct, such as fullscreening a video)
 - /boot/ssh: If this file exists, allow SSH access (make sure to remove autosecure and set a safe password yourself)
-- /boot/url.txt: Display the URL in this file when the OS boots
+- /boot/url.txt: Display the following URLs (one per line, make sure to set /boot/nexturl.txt)
 
 ## Building minimalKioskOS
 

@@ -6,14 +6,21 @@ import pychrome
 
 class ChromiumController():
     def __init__(self):
-        self.kiosk_url = sys.argv[-2]
+        self.kiosk_urls = sys.argv[:-3]
 
         try:
-            self.mutetime = int(sys.argv[-1])
+            self.next_url_time = int(sys.argv[-2])
         except ValueError:
-            self.mutetime = 0
+            self.next_url_time = -1
 
-        self.mutetimeleft = -1
+        try:
+            self.mute_time = int(sys.argv[-1])
+        except ValueError:
+            self.mute_time = 0
+
+        self.current_kiosk_url_index = 0
+        self.next_url_time_left = self.next_url_time
+        self.mute_time_left = -1
 
         self.browser = pychrome.Browser(url="http://127.0.0.1:9222")
         self.tab = self.browser.list_tab()[0]
@@ -28,9 +35,20 @@ class ChromiumController():
 
     def run_forever(self):
         while True:
-            if self.mutetimeleft > 0:
-                self.mutetimeleft -= 1
-            elif self.mutetimeleft == 0:
+            if self.next_url_time_left > 0:
+                self.next_url_time_left -= 1
+            elif self.next_url_time_left == 0:
+                if self.current_kiosk_url_index < len(self.kiosk_urls):
+                    self.current_kiosk_url_index += 1
+                else
+                    self.current_kiosk_url_index = 0
+
+                self.next_url_time_left = self.next_url_time
+                self._load_page()
+
+            if self.mute_time_left > 0:
+                self.mute_time_left -= 1
+            elif self.mute_time_left == 0:
                 subprocess.run(['amixer', 'set', 'PCM', 'unmute'], check=True)
 
             time.sleep(1)
@@ -44,10 +62,10 @@ class ChromiumController():
             self._loading_failed(**kwargs)
             return
 
-        if self.mutetime > 0:
+        if self.mute_time > 0:
             subprocess.run(['amixer', 'set', 'PCM', 'mute'], check=True)
 
-            self.mutetimeleft = self.mutetime
+            self.mute_time_left = self.mute_time
 
     def _loading_failed(self, **kwargs):
         # We only care about the main page loading, not of any subelement
@@ -58,7 +76,7 @@ class ChromiumController():
         self._load_page()
 
     def _load_page(self):
-        self.tab.Page.navigate(url=self.kiosk_url)
+        self.tab.Page.navigate(url=self.kiosk_urls[self.current_kiosk_url_index])
 
 while True:
     try:
