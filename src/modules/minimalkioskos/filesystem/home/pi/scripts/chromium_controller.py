@@ -6,12 +6,24 @@ import pychrome
 
 class ChromiumController():
     def __init__(self):
-        self.kiosk_urls = sys.argv[:-3]
+        self.kiosk_urls = []
+        self.kiosk_urls_display_time = []
+        self.kiosk_urls_keypresses = []
+        self.spamkeys = []
 
-        try:
-            self.next_url_time = int(sys.argv[-2])
-        except ValueError:
-            self.next_url_time = -1
+        with open("/boot/urls.txt", "r") as kiosk_urls_file:
+            line = kiosk_urls_file.readline()
+            while line:
+                data = line.split(' ')
+                self.kiosk_urls.append(data[0])
+                self.kiosk_urls_display_time.append(int(data[-1]) if len(data) > 1 else -1)
+                self.kiosk_urls_keypresses.append(data[1:-1] if len(data) > 2 else [])
+                line = kiosk_urls_file.readline()
+
+        with open("/boot/spamkey.txt", "r") as spamkey_file:
+            line = spamkey_file.readline()
+            if line:
+                self.spamkeys = line.split(' ')
 
         try:
             self.mute_time = int(sys.argv[-1])
@@ -19,11 +31,12 @@ class ChromiumController():
             self.mute_time = 0
 
         self.current_kiosk_url_index = 0
-        self.next_url_time_left = self.next_url_time
+        self.next_url_time_left = -1
         self.mute_time_left = -1
 
         self.browser = pychrome.Browser(url="http://127.0.0.1:9222")
         self.tab = self.browser.list_tab()[0]
+        self.initial_load = True
 
         self.tab.Network.responseReceived = self._response_received
         self.tab.Network.loadingFailed = self._loading_failed
@@ -35,16 +48,14 @@ class ChromiumController():
 
     def run_forever(self):
         while True:
-            if self.next_url_time_left > 0:
-                self.next_url_time_left -= 1
-            elif self.next_url_time_left == 0:
-                if self.current_kiosk_url_index < len(self.kiosk_urls):
-                    self.current_kiosk_url_index += 1
-                else
-                    self.current_kiosk_url_index = 0
+            if self.kiosk_urls_display_time[self.current_kiosk_url_index] >= 0:
+                if self.next_url_time_left >= 0:
+                    self.next_url_time_left -= 1
+                else:
+                    self.next_url_time_left = self.kiosk_urls_display_time[self.current_kiosk_url_index]
 
-                self.next_url_time_left = self.next_url_time
-                self._load_page()
+                if self.next_url_time_left == 0:
+                    self._load_page()
 
             if self.mute_time_left > 0:
                 self.mute_time_left -= 1
@@ -66,6 +77,21 @@ class ChromiumController():
             subprocess.run(['amixer', 'set', 'PCM', 'mute'], check=True)
 
             self.mute_time_left = self.mute_time
+
+        if self.initial_load:
+            for key in self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
+                command, data = key.split(':', 1)
+                chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class chromium']).splitlines()[0]
+                subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True)
+                subprocess.run(['xdotool', command, data], check=True)
+
+            self.initial_load = False
+        else:
+            for key in self.spamkeys:
+                command, data = key.split(':', 1)
+                chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class chromium']).splitlines()[0]
+                subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True)
+                subprocess.run(['xdotool', command, data], check=True)
 
     def _loading_failed(self, **kwargs):
         # We only care about the main page loading, not of any subelement
