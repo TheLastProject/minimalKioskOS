@@ -109,7 +109,12 @@ class ChromiumController():
         self._load_page()
 
     def _load_page(self):
+        self.current_kiosk_url_index += 1
+        if self.current_kiosk_url_index >= len(self.kiosk_urls):
+            self.current_kiosk_url_index = 0
+
         self.tab.Page.navigate(url=self.kiosk_urls[self.current_kiosk_url_index])
+
 
 while True:
     try:
