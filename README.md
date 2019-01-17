@@ -3,7 +3,7 @@
 
 minimalKioskOS is a small [CustomPiOS](https://github.com/guysoft/CustomPiOS) system modelled after [FullPageOS](https://github.com/guysoft/FullPageOS).
 
-minimalKioskOS starts Chromium with the URL defined in /boot/url.txt and watches the process, ensuring connection retries when network connection issues occur.
+minimalKioskOS starts Chromium with the URL(s) defined in /boot/urls.txt and watches the process, ensuring connection retries when network connection issues occur.
 
 ## Why not use FullPageOS?
 
