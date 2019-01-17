@@ -90,6 +90,7 @@ class ChromiumController():
                     chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class', 'chromium'], env=self.env).splitlines()[0]
                     subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True, env=self.env)
                     subprocess.run(['xdotool', command, data], check=True, env=self.env)
+                    time.sleep(1)
 
             self.initial_load = False
         else:

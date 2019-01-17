@@ -47,7 +47,7 @@ example.com/dashboard key:Tab type:username key:Tab type:password key:Return 60
 example.com/logout 1
 ```
 
-Before typing, minimalKioskOS will wait for 5 seconds. This time is added to the display time.
+Before typing, minimalKioskOS will wait for 5 seconds and wait 1 second between each typing action. This time is added to the display time.
 
 ## Building minimalKioskOS
 
