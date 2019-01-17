@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import time
@@ -6,6 +7,9 @@ import pychrome
 
 class ChromiumController():
     def __init__(self):
+        self.env = os.environ.copy()
+        self.env["DISPLAY"] = ":0"
+
         self.kiosk_urls = []
         self.kiosk_urls_display_time = []
         self.kiosk_urls_keypresses = []
@@ -79,19 +83,21 @@ class ChromiumController():
             self.mute_time_left = self.mute_time
 
         if self.initial_load:
-            for key in self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
-                command, data = key.split(':', 1)
-                chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class chromium']).splitlines()[0]
-                subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True)
-                subprocess.run(['xdotool', command, data], check=True)
+            if self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
+                time.sleep(5)
+                for key in self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
+                    command, data = key.split(':', 1)
+                    chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class', 'chromium'], env=self.env).splitlines()[0]
+                    subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True, env=self.env)
+                    subprocess.run(['xdotool', command, data], check=True, env=self.env)
 
             self.initial_load = False
         else:
             for key in self.spamkeys:
                 command, data = key.split(':', 1)
-                chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class chromium']).splitlines()[0]
-                subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True)
-                subprocess.run(['xdotool', command, data], check=True)
+                chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class', 'chromium'], env=self.env).splitlines()[0]
+                subprocess.run(['xdotool', 'windowactivate', chromium_window_id], check=True, env=self.env)
+                subprocess.run(['xdotool', command, data], check=True, env=self.env)
 
     def _loading_failed(self, **kwargs):
         # We only care about the main page loading, not of any subelement
