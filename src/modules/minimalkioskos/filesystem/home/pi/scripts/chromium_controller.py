@@ -40,7 +40,7 @@ class ChromiumController():
 
         self.browser = pychrome.Browser(url="http://127.0.0.1:9222")
         self.tab = self.browser.list_tab()[0]
-        self.initial_load = True
+        self.initial_load = False
 
         self.tab.Network.responseReceived = self._response_received
         self.tab.Network.loadingFailed = self._loading_failed
@@ -111,6 +111,7 @@ class ChromiumController():
 
         self.next_url_time_left = self.kiosk_urls_display_time[self.current_kiosk_url_index]
 
+        self.initial_load = True
         self.tab.Page.navigate(url=self.kiosk_urls[self.current_kiosk_url_index])
 
 
