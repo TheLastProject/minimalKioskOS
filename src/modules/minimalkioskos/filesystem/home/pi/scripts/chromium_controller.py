@@ -34,7 +34,7 @@ class ChromiumController():
         except ValueError:
             self.mute_time = 0
 
-        self.current_kiosk_url_index = 0
+        self.current_kiosk_url_index = -1
         self.next_url_time_left = -1
         self.mute_time_left = -1
 
