@@ -52,14 +52,10 @@ class ChromiumController():
 
     def run_forever(self):
         while True:
-            if self.kiosk_urls_display_time[self.current_kiosk_url_index] >= 0:
-                if self.next_url_time_left >= 0:
-                    self.next_url_time_left -= 1
-                else:
-                    self.next_url_time_left = self.kiosk_urls_display_time[self.current_kiosk_url_index]
-
-                if self.next_url_time_left == 0:
-                    self._load_page()
+            if self.next_url_time_left > 0:
+                self.next_url_time_left -= 1
+            elif self.next_url_time_left == 0:
+                self._load_page()
 
             if self.mute_time_left > 0:
                 self.mute_time_left -= 1
@@ -112,6 +108,8 @@ class ChromiumController():
         self.current_kiosk_url_index += 1
         if self.current_kiosk_url_index >= len(self.kiosk_urls):
             self.current_kiosk_url_index = 0
+
+        self.next_url_time_left = self.kiosk_urls_display_time[self.current_kiosk_url_index]
 
         self.tab.Page.navigate(url=self.kiosk_urls[self.current_kiosk_url_index])
 
