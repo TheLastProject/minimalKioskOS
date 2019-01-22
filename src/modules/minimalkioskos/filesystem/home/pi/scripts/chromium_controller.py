@@ -52,15 +52,16 @@ class ChromiumController():
 
     def run_forever(self):
         while True:
-            if self.next_url_time_left > 0:
-                self.next_url_time_left -= 1
-            elif self.next_url_time_left == 0:
-                self._load_page()
+            if not (self.initial_load and self.kiosk_urls_keypresses[self.current_kiosk_url_index]):
+                if self.next_url_time_left > 0:
+                    self.next_url_time_left -= 1
+                elif self.next_url_time_left == 0:
+                    self._load_page()
 
-            if self.mute_time_left > 0:
-                self.mute_time_left -= 1
-            elif self.mute_time_left == 0:
-                subprocess.run(['amixer', 'set', 'PCM', 'unmute'], check=True)
+                if self.mute_time_left > 0:
+                    self.mute_time_left -= 1
+                elif self.mute_time_left == 0:
+                    subprocess.run(['amixer', 'set', 'PCM', 'unmute'], check=True)
 
             time.sleep(1)
 
@@ -80,7 +81,6 @@ class ChromiumController():
 
         if self.initial_load:
             if self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
-                time.sleep(5)
                 for key in self.kiosk_urls_keypresses[self.current_kiosk_url_index]:
                     command, data = key.split(':', 1)
                     chromium_window_id = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--class', 'chromium'], env=self.env).splitlines()[0]
