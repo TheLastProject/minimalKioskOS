@@ -4,6 +4,10 @@ export DISPLAY=:0
 # Get our location
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Clear Chromium config and cache, they tend to corrupt themselves, causing Chromium to segfault
+rm -rf "$HOME/.config/chromium"
+rm -rf "$HOME/.cache/chromium"
+
 # Autohide mouse when inactive
 unclutter &
 
