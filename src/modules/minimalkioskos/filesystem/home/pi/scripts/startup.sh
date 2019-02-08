@@ -26,4 +26,6 @@ fi
 python3 "$DIR/chromium_controller.py" "$(head -n 1 /boot/mutesound.txt)" &
 
 # Start Chromium
-chromium-browser --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --start-fullscreen --remote-debugging-port=9222 --app="file:///boot/placeholder.html"
+while true; do
+    chromium-browser --kiosk --touch-events=enabled --disable-pinch --noerrdialogs --disable-session-crashed-bubble --start-fullscreen --remote-debugging-port=9222 --app="file:///boot/placeholder.html"
+done
