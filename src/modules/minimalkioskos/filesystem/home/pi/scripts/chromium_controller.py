@@ -8,7 +8,6 @@ import pychrome
 class ChromiumController():
     def __init__(self):
         self.env = os.environ.copy()
-        self.env["DISPLAY"] = ":0"
 
         self.kiosk_urls = []
         self.kiosk_urls_display_time = []

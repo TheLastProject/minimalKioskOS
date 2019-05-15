@@ -5,6 +5,8 @@ minimalKioskOS is a small [CustomPiOS](https://github.com/guysoft/CustomPiOS) sy
 
 minimalKioskOS starts Chromium with the URL(s) defined in /boot/urls.txt and watches the process, ensuring connection retries when network connection issues occur.
 
+A Dockerfile is also available, for running minimalKioskOS outside of a Raspberry Pi.
+
 ## Why not use FullPageOS?
 
 minimalKioskOS focuses on security more. By default, it's locked down and not running any unnecessary processes. Just Chromium in Kiosk mode with the page you want. If anything goes wrong, there's no way to login and fix things (the password is randomized on first boot for security). Just power-cycle it.
@@ -49,7 +51,8 @@ example.com/logout 1
 
 minimalKioskOS will wait for 1 second between each typing action. This time is added to the display time. To add extra delays, add statements like "sleep:5" (to sleep 5 seconds)
 
-## Building minimalKioskOS
+## Building minimalKioskOS (to run on Raspberry Pi)
+This will create an .img file in the workspace directory
 
 ```
 sudo apt-get install realpath p7zip-full qemu-user-static
@@ -63,3 +66,11 @@ cd ..
 sudo modprobe loop
 sudo bash -x ./build_dist
 ```
+
+## Docker image
+First, ensure everything in `src/modules/minimalkioskos/filesystem/boot` is set to values you want.
+
+Build a container: `docker build .`
+Start a new X server with Xephyr (recommended): `Xephyr -ac -br -reset -fullscreen :3`
+
+Run the container: `DISPLAY=:3 docker run -e DISPLAY --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime -v -v /run/dbus/:/run/dbus/:rw /dev/shm:/dev/shm --security-optt seccomp=unconfined <container_id>`
