@@ -73,4 +73,4 @@ First, ensure everything in `src/modules/minimalkioskos/filesystem/boot` is set 
 Build a container: `docker build .`
 Start a new X server with Xephyr (recommended): `Xephyr -ac -br -reset -fullscreen :3`
 
-Run the container: `DISPLAY=:3 docker run -e DISPLAY --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime -v -v /run/dbus/:/run/dbus/:rw /dev/shm:/dev/shm --security-optt seccomp=unconfined <container_id>`
+Run the container: `DISPLAY=:3 docker run -e DISPLAY --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime -v -v /run/dbus/:/run/dbus/:rw /dev/shm:/dev/shm --security-opt seccomp=unconfined <container_id>`
