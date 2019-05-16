@@ -6,16 +6,19 @@ import traceback
 
 import pychrome
 
+
 class ChromiumController():
     def __init__(self):
         self.env = os.environ.copy()
+
+        self.base_dir = "/config" if "RUNNING_IN_DOCKER" in self.env else "/boot"
 
         self.kiosk_urls = []
         self.kiosk_urls_display_time = []
         self.kiosk_urls_keypresses = []
         self.spamkeys = []
 
-        with open("/boot/urls.txt", "r") as kiosk_urls_file:
+        with open(os.path.join(self.base_dir, "urls.txt"), "r") as kiosk_urls_file:
             line = kiosk_urls_file.readline()
             while line:
                 data = line.split(' ')
@@ -24,7 +27,7 @@ class ChromiumController():
                 self.kiosk_urls_keypresses.append(data[1:-1] if len(data) > 2 else [])
                 line = kiosk_urls_file.readline()
 
-        with open("/boot/spamkey.txt", "r") as spamkey_file:
+        with open(os.path.join(self.base_dir, "spamkey.txt"), "r") as spamkey_file:
             line = spamkey_file.readline()
             if line:
                 self.spamkeys = line.split(' ')

@@ -71,6 +71,8 @@ sudo bash -x ./build_dist
 First, ensure everything in `src/modules/minimalkioskos/filesystem/boot` is set to values you want.
 
 Build a container: `docker build .`
-Start a new X server with Xephyr (recommended): `Xephyr -ac -br -reset -fullscreen :3`
+Run the container: `docker run --rm -p 5800:5800 -p 5900:5900 --security-opt seccomp=unconfined <container_id>`
 
-Run the container: `DISPLAY=:3 docker run -e DISPLAY --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime -v -v /run/dbus/:/run/dbus/:rw /dev/shm:/dev/shm --security-opt seccomp=unconfined <container_id>`
+You can now view the content in a browser on port 5800 or a VNC client on port 5900.
+
+See https://github.com/jlesage/docker-baseimage-gui for more options.

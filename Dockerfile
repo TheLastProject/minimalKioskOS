@@ -1,25 +1,18 @@
-FROM ubuntu
+FROM jlesage/baseimage-gui:debian-9
 LABEL maintainer="Sylvia van Os <sylvia@hackerchick.me>"
 
 ENV RUNNING_IN_DOCKER 1
 
-RUN groupadd -g 999 pi && \
-    useradd -r -m -u 999 -g pi -G audio pi
-
-WORKDIR /usr/src/app
+ENV APP_NAME "minimalKioskOS"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  chromium-browser \
-  matchbox-window-manager \
+  chromium \
   python3-pip \
   unclutter \
   xdotool
 RUN pip3 install pychrome
 
-COPY src/modules/minimalkioskos/filesystem/home/pi/scripts/* /usr/src/app/
+COPY src/modules/minimalkioskos/filesystem/home/pi/scripts/* /
+COPY src/modules/minimalkioskos/filesystem/home/pi/scripts/startup.sh /startapp.sh
 
-COPY src/modules/minimalkioskos/filesystem/boot/* /boot/
-
-USER pi
-
-CMD [ "/usr/src/app/startup.sh" ]
+COPY src/modules/minimalkioskos/filesystem/boot/* /config/
